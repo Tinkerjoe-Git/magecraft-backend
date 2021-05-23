@@ -13,7 +13,7 @@ require 'mtg_sdk'
 
 
 
-User.create_admin
+
 Collection.create(name: "Premium Collection")
 Collection.create(name: "Budget Collection")
 Collection.create(name: "Popular Collection")
@@ -32,8 +32,6 @@ card_data = MTG::Card.where(set: 'znr').all
             artist: data.artist,
             flavor: data.flavor,
             loyalty: data.loyalty.to_i,
-            number: data.number.to_i,
-            multiverse_id: data.multiverse_id.to_i,
             image_url: data.image_url,
             colors: data.colors.to_s,
             set: data.set,
