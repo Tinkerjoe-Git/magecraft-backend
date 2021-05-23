@@ -1,4 +1,4 @@
 class CollectionSerializer < ActiveModel::Serializer
-  include JSONAPI::Serializer
+  include FastJsonapi::ObjectSerializer
   attributes :id, :name
 end

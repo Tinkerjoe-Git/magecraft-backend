@@ -5,7 +5,7 @@ class CardsController < ApplicationController
   def index
     @cards = Card.all
 
-    render json: @cards
+    render json: serialize_models(@cards)
   end
 
   # GET /cards/1

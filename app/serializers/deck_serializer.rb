@@ -1,4 +1,4 @@
 class DeckSerializer < ActiveModel::Serializer
-  include JSONAPI::Serializer
+  include FastJsonapi::ObjectSerializer
   attributes :id, :name, :user_id
 end
