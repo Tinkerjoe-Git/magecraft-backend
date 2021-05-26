@@ -5,7 +5,7 @@ class CardsController < ApplicationController
   def index
     @cards = Card.all
 
-    render json: serialize_models(@cards)
+    render json: CardSerializer.new(@cards).serializable_hash
   end
 
   # GET /cards/1

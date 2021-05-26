@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
   resources :cards
   resources :collections
-  resources :deck_cards
-  resources :decks
+  resources :deck_cards do
+    resources :cards, only: [:index, :show, :new, :create]
+  end
+  resources :decks do
+    resources :deck_cards, only: [:index, :new, :create]
+  end
   resources :users
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
 end
