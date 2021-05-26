@@ -16,7 +16,7 @@ class DecksController < ApplicationController
 
   def create
     deck = Deck.new(deck_params)
-    cards = params[:cards].map { |card| Card.find_or_create_by(name: card) }
+    cards = params[:cards].map { |card| Card.find_by(id: params[:id]) }
     deck.cards << cards
     deck.save
     render json: DeckSerializer.new(deck)
