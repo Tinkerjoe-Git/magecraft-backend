@@ -1,6 +1,5 @@
 class Card < ApplicationRecord
   belongs_to :collection, optional: true
-  belongs_to :user, optional: true
   has_many :deck_cards
   has_many :decks, through: :deck_cards
 

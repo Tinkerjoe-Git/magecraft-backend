@@ -3,14 +3,14 @@ class CardsController < ApplicationController
 
   # GET /cards
   def index
-    @cards = Card.all
+    cards = Card.all
 
-    render json: CardSerializer.new(@cards).serializable_hash
+    render json: CardSerializer.new(cards).serializable_hash
   end
 
   # GET /cards/1
   def show
-    render json: @card
+    render json: card
   end
 
   # POST /cards
@@ -26,22 +26,22 @@ class CardsController < ApplicationController
 
   # PATCH/PUT /cards/1
   def update
-    if @card.update(card_params)
-      render json: @card
+    if card.update(card_params)
+      render json: card
     else
-      render json: @card.errors, status: :unprocessable_entity
+      render json: card.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /cards/1
   def destroy
-    @card.destroy
+    card.destroy
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_card
-      @card = Card.find(params[:id])
+      card = Card.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
