@@ -50,3 +50,5 @@ gem "nokogiri", "~> 1.11"
 gem "mtg_sdk", "~> 3.2"
 
 gem 'fast_jsonapi'
+
+gem 'bcrypt'

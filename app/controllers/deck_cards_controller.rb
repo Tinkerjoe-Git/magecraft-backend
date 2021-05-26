@@ -46,6 +46,6 @@ class DeckCardsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def deck_card_params
-      params.require(:deck_card).permit(:deck_id, :card_id, :quantity)
+      params.require(:deck_card).permit(:deck_id, :card_id)
     end
 end

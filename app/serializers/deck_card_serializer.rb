@@ -1,4 +1,5 @@
 class DeckCardSerializer < ActiveModel::Serializer
-  include FastJsonapi::ObjectSerializer
-  attributes :id, :deck_id, :card_id, :quantity
+  attributes :id
+  has_one :deck
+  has_one :card
 end

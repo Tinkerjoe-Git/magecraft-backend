@@ -12,7 +12,7 @@ class DeckCardsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create deck_card" do
     assert_difference('DeckCard.count') do
-      post deck_cards_url, params: { deck_card: { card_id: @deck_card.card_id, deck_id: @deck_card.deck_id, quantity: @deck_card.quantity } }, as: :json
+      post deck_cards_url, params: { deck_card: { card_id: @deck_card.card_id, deck_id: @deck_card.deck_id } }, as: :json
     end
 
     assert_response 201
@@ -24,7 +24,7 @@ class DeckCardsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update deck_card" do
-    patch deck_card_url(@deck_card), params: { deck_card: { card_id: @deck_card.card_id, deck_id: @deck_card.deck_id, quantity: @deck_card.quantity } }, as: :json
+    patch deck_card_url(@deck_card), params: { deck_card: { card_id: @deck_card.card_id, deck_id: @deck_card.deck_id } }, as: :json
     assert_response 200
   end
 

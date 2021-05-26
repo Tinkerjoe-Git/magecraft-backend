@@ -15,7 +15,7 @@ class CreateCards < ActiveRecord::Migration[6.1]
       t.string :mana_cost
       t.string :image_url
       t.integer :loyalty
-      t.integer :collection_id
+      t.belongs_to :deck, foreign_key: true
 
       t.timestamps
     end
