@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_26_045305) do
+ActiveRecord::Schema.define(version: 2021_05_20_210412) do
 
   create_table "cards", force: :cascade do |t|
     t.string "name"
@@ -33,21 +33,6 @@ ActiveRecord::Schema.define(version: 2021_05_26_045305) do
     t.index ["deck_id"], name: "index_cards_on_deck_id"
   end
 
-  create_table "collections", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "deck_cards", force: :cascade do |t|
-    t.integer "deck_id"
-    t.integer "card_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["card_id"], name: "index_deck_cards_on_card_id"
-    t.index ["deck_id"], name: "index_deck_cards_on_deck_id"
-  end
-
   create_table "decks", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -55,6 +40,4 @@ ActiveRecord::Schema.define(version: 2021_05_26_045305) do
   end
 
   add_foreign_key "cards", "decks"
-  add_foreign_key "deck_cards", "cards"
-  add_foreign_key "deck_cards", "decks"
 end

@@ -3,44 +3,61 @@ class DecksController < ApplicationController
 
   # GET /decks
   def index
-    decks = Deck.all
+      @decks = Deck.all
 
-    render json: DeckSerializer.new(decks).serializable_hash, include: :cards
+      render json: @decks
   end
 
+  # GET /decks/1
   def show
-    decks = Card.find_by(name: params[:Card_name]).decks
-
-    render json: deckSerializer.new(decks.sample)
+    render json: @deck
   end
 
+  # POST /decks
   def create
-    deck = Deck.new(deck_params)
-    cards = params[:cards].map { |card| Card.find_by(id: params[:id]) }
-    deck.cards << cards
-    deck.save
-    render json: DeckSerializer.new(deck)
-  end
+    @deck = Deck.new(deck_params)
 
+    if @deck.save
+      render json: {
+        status: 201,
+        deck: @deck
+      }, status: :created, location: deck_path(@deck)
+    else
+      render json: {
+        status: 422,
+        errors: @deck.errors.full_messages.join(", ")
+      }, status: :unprocessable_entity
+    end
+  end
 
   # PATCH/PUT /decks/1
   def update
-    if deck.update(deck_params)
-      render json: deck
+    if @deck.update(deck_params)
+      render json: {
+        status: 204,
+        deck: @deck
+      }
     else
-      render json: deck.errors, status: :unprocessable_entity
+      render json: {
+        status: 400,
+        errors: @deck.errors.full_messages.join(", ")
+      }, status: :unprocessable_entity
     end
   end
 
   # DELETE /decks/1
   def destroy
-    deck.destroy
+    if @deck.destroy
+      render json: {message: "Successfully deleted", deck: @deck}
+    else
+      render json: {message: "Failed to delete"}
+    end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_deck
-      deck = Deck.find(params[:id])
+      @deck = Deck.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
