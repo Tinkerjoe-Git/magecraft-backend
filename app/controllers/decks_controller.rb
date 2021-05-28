@@ -1,16 +1,23 @@
 class DecksController < ApplicationController
   before_action :set_deck, only: [:show, :update, :destroy]
 
-  # GET /decks
   def index
       @decks = Deck.all
 
-      render json: @decks, status: 200
+      render json: @decks, only: [:name, :id], include: {
+          cards: {
+              except: [:created_at, :updated_at]
+          }
+      }
   end
 
   # GET /decks/1
   def show
-    render json: @deck
+    render json: @deck, only: [:name, :id], include: {
+        cards: {
+            except: [:created_at, :updated_at]
+        }
+    }
   end
 
   # POST /decks
