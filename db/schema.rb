@@ -10,7 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_20_210412) do
+ActiveRecord::Schema.define(version: 2021_06_23_030153) do
+
+  create_table "card_formats", force: :cascade do |t|
+    t.integer "card_id"
+    t.integer "format_id"
+    t.boolean "legality", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["card_id"], name: "index_card_formats_on_card_id"
+    t.index ["format_id"], name: "index_card_formats_on_format_id"
+  end
+
+  create_table "card_mtg_sets", force: :cascade do |t|
+    t.integer "card_id", null: false
+    t.integer "mtg_set_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["card_id"], name: "index_card_mtg_sets_on_card_id"
+    t.index ["mtg_set_id"], name: "index_card_mtg_sets_on_mtg_set_id"
+  end
 
   create_table "cards", force: :cascade do |t|
     t.string "name"
@@ -27,17 +46,64 @@ ActiveRecord::Schema.define(version: 2021_05_20_210412) do
     t.string "mana_cost"
     t.string "image_url"
     t.integer "loyalty"
-    t.integer "deck_id"
+    t.integer "multiverse_id"
+    t.integer "mtg_set_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["deck_id"], name: "index_cards_on_deck_id"
+    t.index ["mtg_set_id"], name: "index_cards_on_mtg_set_id"
+  end
+
+  create_table "deck_cards", force: :cascade do |t|
+    t.integer "deck_id"
+    t.integer "card_id"
+    t.integer "card_quantity", default: 1
+    t.boolean "sideboard", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["card_id"], name: "index_deck_cards_on_card_id"
+    t.index ["deck_id"], name: "index_deck_cards_on_deck_id"
   end
 
   create_table "decks", force: :cascade do |t|
+    t.string "name"
+    t.string "creator"
+    t.integer "format_id"
+    t.integer "user_id"
+    t.integer "mainboard"
+    t.integer "sideboard"
+    t.integer "total_cards"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["format_id"], name: "index_decks_on_format_id"
+    t.index ["user_id"], name: "index_decks_on_user_id"
+  end
+
+  create_table "formats", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "cards", "decks"
+  create_table "mtg_sets", force: :cascade do |t|
+    t.string "name"
+    t.string "code"
+    t.date "release_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "username"
+    t.string "password_digest"
+    t.string "email"
+    t.boolean "admin", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  add_foreign_key "card_formats", "cards"
+  add_foreign_key "card_formats", "formats"
+  add_foreign_key "card_mtg_sets", "cards"
+  add_foreign_key "card_mtg_sets", "mtg_sets"
 end

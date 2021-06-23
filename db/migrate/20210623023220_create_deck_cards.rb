@@ -5,7 +5,7 @@ class CreateDeckCards < ActiveRecord::Migration[6.1]
       t.index :deck_id
       t.belongs_to :card, index: true
       t.integer :card_quantity, default: 1
-      t.boolean, :sideboard, default: false
+      t.boolean :sideboard, default: false
       t.timestamps
     end
   end

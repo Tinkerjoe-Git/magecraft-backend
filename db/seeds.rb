@@ -9,7 +9,7 @@
 
 require 'mtg_sdk'
 
-User.create_admin
+#User.create_admin
 
 
 #  jeskai_control = Deck.new(name: 'Jeskai Control')
@@ -92,7 +92,7 @@ card_data = MTG::Card.where(set: 'znr').all
 
         )
         sets.save
-        puts "#{mtg_set.name} generated"
+        puts "#{sets.name} generated"
     end
 
     
