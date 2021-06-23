@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  card: one
+  mtg_set: one
+
+two:
+  card: two
+  mtg_set: two

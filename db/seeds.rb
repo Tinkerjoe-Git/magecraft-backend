@@ -9,6 +9,8 @@
 
 require 'mtg_sdk'
 
+User.create_admin
+
 
 #  jeskai_control = Deck.new(name: 'Jeskai Control')
 #  dredge = Deck.new(name: 'Dredge Deck')
@@ -69,8 +71,33 @@ card_data = MTG::Card.where(set: 'znr').all
             colors: data.colors.to_s,
             set: data.set,
             card_type: data.type,
-            mana_cost: data.mana_cost.to_s
+            mana_cost: data.mana_cost.to_s,
+            multiverse_id: data.multiverse_id
         )
         cards.save
         puts "#{cards.name} generated"
     end
+
+
+    set_data = MTG::Set.all
+    
+
+        set_data.each do |data|
+        puts 'generating set data...'
+        sets = MtgSet.create(
+            name: data.name,
+            code: data.code,
+            release_date: data.release_date,
+            
+
+        )
+        sets.save
+        puts "#{mtg_set.name} generated"
+    end
+
+    
+
+
+
+
+    formats = ['Standard', 'Historic', 'Modern', 'Legacy', 'Vintage', 'Commander']

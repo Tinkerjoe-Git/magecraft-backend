@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  deck_id: 1
+  belongs_to: 
+  card_quantity: 1
+  sideboard: 
+  default: 
+
+two:
+  deck_id: 1
+  belongs_to: 
+  card_quantity: 1
+  sideboard: 
+  default: 
