@@ -22,7 +22,19 @@ class DecksController < ApplicationController
 
   # POST /decks
   def create
-    @deck = Deck.new(deck_params)
+    @user = User.find(params[:id])
+    current_user = @user
+    @deck = current_user.decks.create!(name: deck_params[:name])
+    
+    deck_params[:card_ids].map do |card_id|
+        
+        DeckCard.create!(
+            deck_id: @deck.id,
+            card_id: card_id,
+            card_quantity: deck_params[:card_quantity][card_id.to_i-1]
+        )
+
+    end
 
     if @deck.save
       render json: {
@@ -69,6 +81,6 @@ class DecksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def deck_params
-      params.require(:deck).permit(:name)
+      params.require(:deck).permit(:name, card_ids: [], card_card_quantity: [])
     end
 end

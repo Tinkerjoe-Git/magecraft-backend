@@ -2,6 +2,12 @@ class CardsController < ApplicationController
   before_action :set_card, only: [:show, :update, :destroy]
 
   # GET /cards
+
+  def search
+      @cards = Card.search(params[:name])
+      render json: index
+  end
+
   def index
     @cards = Card.all
 
@@ -46,6 +52,6 @@ class CardsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def card_params
-      params.require(:card).permit(:name, :text, :power, :toughness, :cmc, :rarity, :card_type, :artist, :colors, :set, :flavor, :mana_cost, :image_url, :loyalty)
+      params.require(:card).permit(:name, :text, :power, :toughness, :cmc, :rarity, :card_type, :artist, :colors, :set, :flavor, :mana_cost, :image_url, :loyalty, :multiverse_id)
     end
 end
