@@ -216,6 +216,7 @@ DEPENDENCIES
   byebug
   fast_jsonapi
   httparty (~> 0.18.1)
+  json (~> 2.5)
   listen (~> 3.3)
   mtg_sdk (~> 3.2)
   nokogiri (~> 1.11)

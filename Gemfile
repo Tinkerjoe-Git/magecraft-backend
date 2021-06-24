@@ -52,3 +52,5 @@ gem "mtg_sdk", "~> 3.2"
 gem 'fast_jsonapi'
 
 gem 'bcrypt'
+
+gem "json", "~> 2.5"
