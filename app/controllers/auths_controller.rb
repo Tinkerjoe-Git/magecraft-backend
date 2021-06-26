@@ -1,5 +1,5 @@
   
-class AuthController < ApplicationController
+class AuthsController < ApplicationController
   def create
     if @user = User.find_by(name: params[:username])
       if @user.authenticate(params[:password])

@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   resources :users
   post '/signup', to: 'users#create'
+  post '/login', to: 'auth#create'
+  get '/current_user', to: 'auth#show'
 
   resources :card_formats
   resources :card_mtg_sets

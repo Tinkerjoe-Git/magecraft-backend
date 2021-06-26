@@ -4,8 +4,17 @@ class CardsController < ApplicationController
   # GET /cards
 
   def search
-      @cards = Card.search(params[:name])
-      render json: index
+    if params[:card][:term]
+      if params[:card][:term] == 'default'
+        @cards = Card.default_search
+      else
+        @cards = Card.search(params[:card])
+      end
+    else
+
+    end
+
+    render json: (@cards)
   end
 
   def index
