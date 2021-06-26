@@ -57,5 +57,4 @@ gem "json", "~> 2.5"
 
 gem "dotenv-rails", "~> 2.7"
 
-gem "gem", "~> 0.0.1.alpha"
 gem "jwt", "~> 2.2"

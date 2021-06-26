@@ -2,6 +2,18 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
 
   # GET /users
+
+  def login
+    auth_object = Authentication.new(login_params)
+    if auth_object.authenticate
+      render json: {
+        message: "Login successful!", token: auth_object.generate_token }, status: :ok
+    else
+      render json: {
+        message: "Incorrect username/password combination"}, status: :unauthorized
+    end
+  end
+
   def index
     @users = User.all
 
@@ -46,7 +58,12 @@ class UsersController < ApplicationController
     end
 
     # Only allow a list of trusted parameters through.
+
+    def login_params
+      params.permit(:username, :password)
+    end
+    
     def user_params
-      params.require(:user).permit(:name, :username, :password_digest, :email)
+      params.require(:user).permit(:username, :password_digest)
     end
 end

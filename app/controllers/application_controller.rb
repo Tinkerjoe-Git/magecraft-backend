@@ -1,16 +1,17 @@
 class ApplicationController < ActionController::API
+  include ExceptionHandler
   def issue_token(payload)
-    JWT.encode(payload, ENV["jwt_secret"])
+    JWT.encode(payload, ENV["JWT_SECRET"])
   end
 
-  def decode_token
-    JWT.decode(get_token, ENV["jwt_secret"])[0]
-  end
+  # def decode_token
+  #   JWT.decode(get_token, ENV["JWT_SECRET"])[0]
+  # end
+
+
 
   def current_user
-    decoded_hash = decode_token
-    @user = User.find(decoded_hash["user_id"])
-    UserSerializer.new(@user).serializable_hash
+    JsonWebToken.decode(@token)[:user_id] if @token
   end
 
   def get_token
