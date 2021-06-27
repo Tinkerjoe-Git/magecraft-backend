@@ -1,7 +1,5 @@
 class CardsController < ApplicationController
-  before_action :set_card, only: [:show, :update, :destroy]
-
-  # GET /cards
+  ##before_action :set_card, only: [:show, :update, :destroy]
 
   def search
     if params[:card][:term]
@@ -14,8 +12,9 @@ class CardsController < ApplicationController
 
     end
 
-    render json: (@cards)
+    render json: CardSerializer.new(@cards).serialized_json
   end
+  
 
   def index
     @cards = Card.all
@@ -38,11 +37,11 @@ class CardsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_card
-      card = Card.find(params[:id])
+      @card = Card.find_by(id: params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def card_params
-      params.require(:card).permit(:name, :text, :power, :toughness, :cmc, :rarity, :card_type, :artist, :colors, :set, :flavor, :mana_cost, :image_url, :loyalty, :multiverse_id)
+      params.require(:card).permit(:name, :text, :power, :toughness, :cmc, :rarity, :card_type, :artist, :colors, :set, :flavor, :mana_cost, :image_url, :loyalty)
     end
 end
