@@ -27,7 +27,7 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    @user = User.new(user_params)
+    @user = User.new(name: params[:username], password: params[:password])
 
     if @user.save
       jwt = issue_token({user_id: @user.id})
@@ -63,7 +63,7 @@ class UsersController < ApplicationController
       params.permit(:username, :password)
     end
     
-    def user_params
-      params.require(:user).permit(:username, :password_digest)
-    end
+    # def user_params
+    #   params.require(:user).permit(:username, :password_digest)
+    # end
 end
