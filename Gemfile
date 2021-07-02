@@ -58,3 +58,7 @@ gem "json", "~> 2.5"
 gem "dotenv-rails", "~> 2.7"
 
 gem "jwt", "~> 2.2"
+
+gem "mechanize", "~> 2.8"
+
+gem "devise", "~> 4.8"

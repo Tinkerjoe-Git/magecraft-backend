@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
   patch '/decks/:deck_id/deck_cards', to: 'deck_cards#update'
   delete '/decks/:deck_id/deck_cards', to: 'deck_cards#destroy'
+  get '/cards', to: 'cards#index'
   get '/cards/search', to: 'cards#search'
   get '/decks/search', to: 'decks#search'
   post '/signup', to: 'users#create'
   post '/login', to: 'auths#create'
   get '/current_user', to: 'auths#show'
+
+  
   
 
 
