@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  devise_for :users, controllers: {
+  registrations: :registrations,
+  sessions: :sessions
+  }
   patch '/decks/:deck_id/deck_cards', to: 'deck_cards#update'
   delete '/decks/:deck_id/deck_cards', to: 'deck_cards#destroy'
   get '/cards', to: 'cards#index'

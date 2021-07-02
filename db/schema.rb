@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_23_030153) do
+ActiveRecord::Schema.define(version: 2021_07_02_221212) do
 
   create_table "card_formats", force: :cascade do |t|
     t.integer "card_id"
@@ -100,6 +100,12 @@ ActiveRecord::Schema.define(version: 2021_06_23_030153) do
     t.boolean "admin", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "card_formats", "cards"

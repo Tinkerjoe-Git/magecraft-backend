@@ -15,7 +15,13 @@ Devise.setup do |config|
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
   # config.secret_key = 'bac6299dc2098339541c4e4d2997aeec8cf64c4aef7fca56e40301ec33bc7f851c00448d7df70fbdc8da13162f0dd9708381b6cd9da9bc7050c4c24c92fc3147'
-
+  config.jwt do |jwt|
+    jwt.secret = ENV['DEVISE_JWT_SECRET_KEY']
+    jwt.expiration_time = ENV['DEVISE_JWT_EXPIRATION_TIME_SECONDS'].to_i.seconds.to_i
+    jwt.dispatch_requests = [
+    ['GET', %r{users/sign_in}],
+    ['POST', %r{users/refresh}]
+  end
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
   # config.parent_controller = 'DeviseController'
@@ -110,6 +116,7 @@ Devise.setup do |config|
   # requires the Devise mappings to be loaded during boot time the application
   # won't boot properly.
   # config.reload_routes = true
+  config.http_authenticatable = [:database]
 
   # ==> Configuration for :database_authenticatable
   # For bcrypt, this is the cost for hashing the password and defaults to 12. If
