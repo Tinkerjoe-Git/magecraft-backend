@@ -16,12 +16,14 @@ Devise.setup do |config|
   # by default. You can change it below and use your own secret key.
   # config.secret_key = 'bac6299dc2098339541c4e4d2997aeec8cf64c4aef7fca56e40301ec33bc7f851c00448d7df70fbdc8da13162f0dd9708381b6cd9da9bc7050c4c24c92fc3147'
   config.jwt do |jwt|
-    jwt.secret = ENV['DEVISE_JWT_SECRET_KEY']
-    jwt.expiration_time = ENV['DEVISE_JWT_EXPIRATION_TIME_SECONDS'].to_i.seconds.to_i
-    jwt.dispatch_requests = [
-    ['GET', %r{users/sign_in}],
-    ['POST', %r{users/refresh}]
-    ]
+      jwt.secret = Rails.application.credentials.fetch(:secret_key_base)
+      jwt.dispatch_requests = [
+        ['POST', %r{^/login$}]
+      ]
+      jwt.revocation_requests = [
+        ['DELETE', %r{^/logout$}]
+      ]
+      jwt.expiration_time = 30.minutes.to_i
   end
   
 
@@ -270,6 +272,7 @@ Devise.setup do |config|
   # Lists the formats that should be treated as navigational. Formats like
   # :html, should redirect to the sign in page when the user does not have
   # access, but formats like :xml or :json, should return 401.
+  config.navigational_formats = []
   #
   # If you have any extra navigational formats, like :iphone or :mobile, you
   # should add them to the navigational formats lists.
