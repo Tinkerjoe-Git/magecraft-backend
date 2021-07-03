@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   get '/cards', to: 'cards#index'
   get '/cards/search', to: 'cards#search'
   get '/decks/search', to: 'decks#search'
-  # post '/signup', to: 'sessions#create'
+  post '/signup', to: 'registrations#create'
   # post '/login', to: 'auths#create'
   get '/current_user', to: 'current_user#index'
 
