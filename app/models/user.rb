@@ -5,8 +5,7 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :registerable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
-  
-  has_many :collections
+
   has_many :decks
   validates :name, presence: true, uniqueness: true
   validates :password, presence: true
@@ -17,7 +16,7 @@ class User < ApplicationRecord
   end
 
   def jwt_payload
-    super  
+    super.merge('foo' => 'bar') 
   end
 
   def on_jwt_dispatch(_token, _payload)
