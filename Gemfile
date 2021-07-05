@@ -63,3 +63,5 @@ gem "mechanize", "~> 2.8"
 gem "devise", "~> 4.8"
 
 gem "devise-jwt", "~> 0.8.1"
+
+gem "webpacker", "~> 5.4"
