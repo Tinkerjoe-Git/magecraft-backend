@@ -3,4 +3,12 @@ class CurrentUserController < ApplicationController
   def index
     render json: current_user, status: :ok
   end
+
+  def show
+    if current_user
+      render json: current_user
+    else
+      render json: {error: {message: "Not logged in"}}
+    end
+  end
 end
