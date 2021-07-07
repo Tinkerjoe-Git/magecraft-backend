@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
   respond_to :json
+  wrap_parameters format: [:json]
   #before_action :process_token
 
   private
