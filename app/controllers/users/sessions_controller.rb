@@ -3,9 +3,9 @@
 class Users::SessionsController < Devise::SessionsController
   respond_to :json
   wrap_parameters format: [:json]
-  # before_action :authenticate_user!
+  before_action :authenticate_user!
 
-  before_action :configure_sign_in_params, only: [:create]
+  before_action :configure_sign_in_params, only: [:create, :new]
 
   # GET /resource/sign_in
   def new
