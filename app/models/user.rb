@@ -12,8 +12,8 @@ class User < ApplicationRecord
   validates :password, presence: true
   
 
-  def generate_jwt
-    JWT.encode({id: id, exp: 60.days.from_now.to_i}, ENV[DEVISE_JWT_SECRET_KEY])
+  def generate_jwt(payload)
+    JWT.encode(payload, ENV[DEVISE_JWT_SECRET_KEY])
   end
 
   def jwt_payload

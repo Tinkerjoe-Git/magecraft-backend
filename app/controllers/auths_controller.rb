@@ -3,8 +3,7 @@ class AuthsController < ApplicationController
   def create
     if @user = User.find_by_name(params[:user][:name])
       if @user.valid? == 'true'
-        @user = current_user
-        jwt = user.generate_jwt
+        jwt = @user.generate_jwt({id: @user.id})
         render json: {user: UserSerializer.new(@user).serializable_hash, jwt: jwt}
       else
         render json: {error: {message: "Invalid password"}}
