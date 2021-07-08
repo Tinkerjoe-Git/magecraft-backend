@@ -1,8 +1,6 @@
 class ApplicationController < ActionController::API
   respond_to :json
   wrap_parameters format: [:json]
-  #before_action :process_token
-
   private
 
   # # Check for auth headers - if present, decode or send unauthorized response (called always to allow current_user)

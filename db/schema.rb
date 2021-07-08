@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_03_032242) do
+ActiveRecord::Schema.define(version: 2021_07_08_025254) do
 
   create_table "card_formats", force: :cascade do |t|
     t.integer "card_id"
@@ -95,7 +95,6 @@ ActiveRecord::Schema.define(version: 2021_07_03_032242) do
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "username"
-    t.string "password_digest"
     t.string "email"
     t.boolean "admin", default: false
     t.datetime "created_at", precision: 6, null: false
