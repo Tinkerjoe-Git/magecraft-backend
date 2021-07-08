@@ -8,6 +8,7 @@ class User < ApplicationRecord
 
   has_many :decks
   validates :name, presence: true, uniqueness: true
+  validates :email, presence: true
   validates :password, presence: true
   
 
@@ -16,7 +17,7 @@ class User < ApplicationRecord
   end
 
   def jwt_payload
-    super.merge('foo' => 'bar') 
+    super
   end
 
   def on_jwt_dispatch(_token, _payload)
