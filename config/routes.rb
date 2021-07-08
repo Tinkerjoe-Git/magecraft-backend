@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  # get '/current_user', to: 'current_user#index'
+  get '/current_user', to: 'auths#show'
   patch '/decks/:deck_id/deck_cards', to: 'deck_cards#update'
   delete '/decks/:deck_id/deck_cards', to: 'deck_cards#destroy'
   get '/cards', to: 'cards#index'
