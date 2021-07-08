@@ -13,7 +13,7 @@ class User < ApplicationRecord
   
 
   def generate_jwt
-    JWT.encode({id: id, exp: 60.days.from_now.to_i}, Rails.application.secrets.secret_key_base)
+    JWT.encode({id: id, exp: 60.days.from_now.to_i}, ENV[DEVISE_JWT_SECRET_KEY])
   end
 
   def jwt_payload
@@ -21,6 +21,7 @@ class User < ApplicationRecord
   end
 
   def on_jwt_dispatch(_token, _payload)
+    super
   end
 
   def self.create_admin
