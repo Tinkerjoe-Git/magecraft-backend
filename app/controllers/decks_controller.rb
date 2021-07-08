@@ -1,86 +1,93 @@
 class DecksController < ApplicationController
-  before_action :set_deck, only: [:show, :update, :destroy]
 
-  def index
-      @decks = Deck.all
-
-      render json: @decks, only: [:name, :id], include: {
-          cards: {
-              except: [:created_at, :updated_at]
-          }
-      }
-  end
-
-  # GET /decks/1
-  def show
-    render json: @deck, only: [:name, :id], include: {
-        cards: {
-            except: [:created_at, :updated_at]
-        }
-    }
-  end
-
-  # POST /decks
-  def create
-    @user = User.find(params[:id])
-    current_user = @user
-    @deck = current_user.decks.create!(name: deck_params[:name])
-    
-    deck_params[:card_ids].map do |card_id|
-        
-        DeckCard.create!(
-            deck_id: @deck.id,
-            card_id: card_id,
-            card_quantity: deck_params[:card_quantity][card_id.to_i-1]
-        )
-
+  def search
+    if params[:deck][:term]
+      if params[:deck][:term] == 'default'
+        @decks = Deck.default_search
+      end
     end
+    render json: DeckSerializer.new(@decks).serialized_json
+  end
+
+  def show
+    @deck = Deck.by_id(params[:id])
+    render json: DeckSerializer.new(@deck).serialized_json
+  end
+
+  def create
+    if params[:cards].length == 0
+      render json: {error: {message:"Deck submitted with no cards"}} and return
+    end
+
+    authenticate_user!
+    @user = current_user
+
+    @deck = Deck.new(
+      name: params[:name].titleize,
+      format_id: Format.find_by(name: params[:formatName]).id,
+      user_id: @user.id
+      creator: params[:creator]
+    )
 
     if @deck.save
-      render json: {
-        status: 201,
-        deck: @deck
-      }, status: :created, location: deck_path(@deck)
+      params[:cards].each do |card|
+        new_deck_card = DeckCard.new(
+          deck_id: @deck.id,
+          card_id: card[:card_id] || Card.find_by(name: card[:name]).id,
+          card_quantity: card[:count] == '' ?  1 : card[:count],
+          sideboard: card[:sideboard]
+        )
+        new_deck_card.save
+      end
+      @deck.save
+      @deck = Deck.joins(:format, :user).where(id: @deck.id).select('decks.*, formats.name AS format_name, users.name AS user_name').references(:format, :user)[0]
+      render json: DeckSerializer.new(@deck).serialized_json and return
     else
-      render json: {
-        status: 422,
-        errors: @deck.errors.full_messages.join(", ")
-      }, status: :unprocessable_entity
+      render json: {message: "Failed to create deck", error: @deck.errors}
     end
   end
 
-  # PATCH/PUT /decks/1
   def update
-    if @deck.update(deck_params)
-      render json: {
-        status: 204,
-        deck: @deck
-      }
-    else
-      render json: {
-        status: 400,
-        errors: @deck.errors.full_messages.join(", ")
-      }, status: :unprocessable_entity
+    authenticate_user!
+    if @current_user_id = jwt_payload['id']
+      original_deck_cards = DeckCard.where(deck_id: params[:id])
+      new_deck_cards = params[:cards]
+      ids_to_destroy = original_deck_cards.map{|c| c[:id]} - new_deck_cards.map{|c| c[:id]}.compact
+      deck_cards_to_delete =
+      deck_cards_to_add = new_deck_cards.select{|c| c[:id] == nil}
+      if ids_to_destroy.length > 0
+        DeckCard.where(id: ids_to_destroy).destroy_all
+      end
+
+      if deck_cards_to_add.length > 0
+        card_errors =  Card.validate_card_names(deck_cards_to_add)
+        if card_errors.length > 0
+          render json: {error: {message:"Some card names are incorrect", keys: card_errors}} and return
+        end
+        deck_cards_to_add.each do |c|
+          @deck_card = DeckCard.new(
+                  deck_id: params[:id],
+                  sideboard: c[:sideboard],
+                  card_quantity: c[:count] == '' ?  1 : c[:count],
+                  card_id: Card.find_by(name: c[:name]).id
+                )
+          @deck_card.save
+        end
+      end
+
+      @deck = Deck.by_id(params[:id])
+      @deck.save
+      render json: DeckSerializer.new(@deck).serialized_json
     end
   end
 
-  # DELETE /decks/1
   def destroy
+    @deck = Deck.by_id(params[:id])
     if @deck.destroy
-      render json: {message: "Successfully deleted", deck: @deck}
+      render json: {message: "#{@deck.name} deleted", user: current_user}
     else
-      render json: {message: "Failed to delete"}
+      render json: {message:"Something went wrong"}
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_deck
-      @deck = Deck.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def deck_params
-      params.require(:deck).permit(:name, card_ids: [], card_card_quantity: [])
-    end
 end
