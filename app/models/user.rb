@@ -7,13 +7,13 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: self
 
   has_many :decks
-  validates :name, presence: true, uniqueness: true
+  # validates :name, presence: true, uniqueness: true
   validates :email, presence: true
   ##validates :password, presence: true
   
 
   def generate_jwt
-    JWT.encode({id: id, exp: 60.days.from_now.to_i}, Rails.application.secrets.secret_key_base)
+    JWT.encode({id: id, exp: 60.days.from_now.to_i}, Rails.application.credentials.devise[:jwt_secret_key])
   end
 
   def jwt_payload

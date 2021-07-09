@@ -2,18 +2,28 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   respond_to :json
-  before_action :configure_sign_up_params, only: [:create, :new]
+  # before_action :configure_sign_up_params, only: [:create, :new]
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
-  def new
-    super
+  # def new
+  #   super
+  # end
+
+  # # POST /resource
+  # def create
+  #   super
+  # end
+
+  def create
+    @user = User.new(name: params[:name], email: params[:email], password: params[:password])
+    if @user.save
+      jwt = issue_token({user_id: @user.id})
+      render json: {user: UserSerializer.new(@user).serializable_hash, jwt: jwt}
+    end
   end
 
-  # POST /resource
-  def create
-    super
-  end
+
 
   # GET /resource/edit
   # def edit
@@ -41,23 +51,23 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   private
 
-  def respond_with(resource, _opts = {})
-    if resource.persisted?
-      render json: {
-        status: {code: 200, message: 'Signed up sucessfully.'},
-        data: UserSerializer.new(resource).serializable_hash[:data][:attributes]
-      }
-    else
-      render json: {
-        status: {message: "User couldn't be created successfully. #{resource.errors.full_messages.to_sentence}"}
-      }, status: :unprocessable_entity
-    end
-  end
+  # def respond_with(resource, _opts = {})
+  #   if resource.persisted?
+  #     render json: {
+  #       status: {code: 200, message: 'Signed up sucessfully.'},
+  #       data: UserSerializer.new(resource).serializable_hash[:data][:attributes]
+  #     }
+  #   else
+  #     render json: {
+  #       status: {message: "User couldn't be created successfully. #{resource.errors.full_messages.to_sentence}"}
+  #     }, status: :unprocessable_entity
+  #   end
+  # end
 
-  # If you have extra params to permit, append them to the sanitizer.
-  def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute, :name, :email, :password])
-  end
+  # # If you have extra params to permit, append them to the sanitizer.
+  # def configure_sign_up_params
+  #   devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute, :name, :email, :password])
+  # end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_account_update_params

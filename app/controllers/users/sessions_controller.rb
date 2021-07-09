@@ -2,8 +2,8 @@
 
 class Users::SessionsController < Devise::SessionsController
   respond_to :json
-  wrap_parameters format: [:json]
-  before_action :authenticate_user!
+  # wrap_parameters format: [:json]
+  # before_action :authenticate_user!
 
   before_action :configure_sign_in_params, only: [:create, :new]
 
@@ -14,10 +14,10 @@ class Users::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
   def create
-    super
+    super   
   end
 
-  DELETE /resource/sign_out
+  # DELETE /resource/sign_out
   def destroy
     super
   end
@@ -50,3 +50,4 @@ class Users::SessionsController < Devise::SessionsController
     devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute, :name, :email, :password])
   end
 end
+

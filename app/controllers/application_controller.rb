@@ -1,8 +1,26 @@
 class ApplicationController < ActionController::API
   respond_to :json
-  wrap_parameters format: [:json]
+  # wrap_parameters format: [:json]
 
   # before_action :authenticate_user!
+
+  def issue_token(payload)
+    JWT.encode(payload, Rails.application.credentials.devise[:jwt_secret_key])
+  end
+
+  def decode_token
+    JWT.decode(get_token, Rails.application.credentials.devise[:jwt_secret_key])[0]
+  end
+
+  def current_user
+    decoded_hash = decode_token
+    @user = User.find(decoded_hash["user_id"])
+    UserSerializer.new(@user).serializable_hash
+  end
+
+  def get_token
+    request.headers["Authorization"]
+  end
 
 
 
@@ -11,7 +29,7 @@ class ApplicationController < ActionController::API
     if request.headers['Authorization'].present?
       authenticate_or_request_with_http_token do |token|
         begin
-          jwt_payload = JWT.decode(token, Rails.application.secrets.secret_key_base).first
+          jwt_payload = JWT.decode(token, Rails.application.credentials.devise[:jwt_secret_key]).first
 
           @current_user_id = jwt_payload['id']
         rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
@@ -26,9 +44,9 @@ class ApplicationController < ActionController::API
     head :unauthorized unless signed_in?
   end
 
-  def current_user
-    @current_user ||= super || User.find_by(id: params[:user_id]) || @current_user_id
-  end
+  # def current_user
+  #   @current_user ||= super || User.find_by(id: params[:user_id]) || @current_user_id
+  # end
 
   def signed_in?
     @current_user_id.present?
