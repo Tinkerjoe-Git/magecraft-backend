@@ -1,5 +1,10 @@
 class DecksController < ApplicationController
 
+  def index
+    @decks = Deck.all
+    render json: @decks
+  end
+
   def search
     if params[:deck][:term]
       if params[:deck][:term] == 'default'
@@ -25,7 +30,7 @@ class DecksController < ApplicationController
     @deck = Deck.new(
       name: params[:name].titleize,
       format_id: Format.find_by(name: params[:formatName]).id,
-      user_id: @user.id
+      user_id: @user.id,
       creator: params[:creator]
     )
 
