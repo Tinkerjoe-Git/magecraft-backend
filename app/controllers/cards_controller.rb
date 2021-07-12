@@ -2,17 +2,11 @@ class CardsController < ApplicationController
   ##before_action :set_card, only: [:show, :update, :destroy]
 
   def search
-    if params[:card][:term]
-      if params[:card][:term] == 'default'
-        @cards = Card.default_search
-      else
-        @cards = Card.search(params[:card])
-      end
-    else
+    @cards = Card.search(params[:query] || "")
 
-    end
-
-    render json: CardSerializer.new(@cards).serialized_json
+    render json: @cards
+      
+    # render json: CardSerializer.new(@cards).serialized_json
   end
   
 

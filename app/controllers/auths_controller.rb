@@ -3,7 +3,7 @@ class AuthsController < ApplicationController
 
   def create
     if @user = User.find_by(name: params[:username])
-      if @user.valid?
+      if @user.password == params[:password]
         jwt = issue_token({user_id: @user.id})
         render json: {user: UserSerializer.new(@user).serializable_hash, jwt: jwt}
       else
