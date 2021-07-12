@@ -3,7 +3,7 @@ class DeckCard < ApplicationRecord
   belongs_to :card
   validates :card_id, :deck_id, presence: true
 
-  accepts_nested_attributes_for :card
+  # accepts_nested_attributes_for :card
   
   def self.get_deck_cards_by_deck(deck_id)
     DeckCard.select(

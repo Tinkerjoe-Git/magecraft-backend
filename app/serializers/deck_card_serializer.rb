@@ -1,4 +1,4 @@
-class DeckCardSerializer < ActiveModel::Serializer
+class DeckCardSerializer
   include FastJsonapi::ObjectSerializer
   set_key_transform :camel_lower
   

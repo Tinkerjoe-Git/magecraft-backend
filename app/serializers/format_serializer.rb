@@ -1,3 +1,4 @@
-class FormatSerializer < ActiveModel::Serializer
+class FormatSerializer
+  include FastJsonapi::ObjectSerializer
   attributes :id, :name
 end

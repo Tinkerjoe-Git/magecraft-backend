@@ -1,4 +1,5 @@
-class CardFormatSerializer < ActiveModel::Serializer
+class CardFormatSerializer
+  include FastJsonapi::ObjectSerializer
   attributes :id, :legality
   has_one :card
   has_one :format

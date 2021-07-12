@@ -1,11 +1,35 @@
 Rails.application.routes.draw do
+  get '/current_user', to: 'auths#show'
   patch '/decks/:deck_id/deck_cards', to: 'deck_cards#update'
   delete '/decks/:deck_id/deck_cards', to: 'deck_cards#destroy'
+  get '/cards', to: 'cards#index'
   get '/cards/search', to: 'cards#search'
   get '/decks/search', to: 'decks#search'
-  post '/signup', to: 'users#create'
+  # post '/signup', to: 'registrations#create'
   post '/login', to: 'auths#create'
-  get '/current_user', to: 'auths#show'
+  get '/decks', to: 'decks#index'
+
+
+
+
+
+  devise_for :users, path: '', path_names: {
+    # sign_in: 'login',
+    sign_out: 'logout',
+    registration: 'signup'
+  },
+  controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
+  }
+
+  
+
+  authenticated :user do
+    root to: 'home#index', as: :authenticated_root
+  end
+  root to: redirect('/users/sign_in')
+  
   
 
 
@@ -15,10 +39,8 @@ Rails.application.routes.draw do
   resources :mtg_sets
   resources :formats
   resources :deck_cards
-  resources :deck_cards do
-  end
-  resources :decks do
-  end
+  resources :deck_cards
+  resources :decks
 
  
 
