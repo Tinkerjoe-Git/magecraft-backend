@@ -29,8 +29,8 @@ class DecksController < ApplicationController
 
     @deck = Deck.new(
       name: params[:name],
-      format_id: Format.find_by(name: params[:formatName]).id,
-      user_id: @user.id,
+      format_id: Format.find_or_create_by(name: params[:formatName]).id,
+      user_id: decode_token["user_id"],
       creator: params[:creator]
     )
 
