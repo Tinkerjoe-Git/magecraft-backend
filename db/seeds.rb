@@ -11,8 +11,8 @@
 
 # User.create_admin
 
-User.create!(name: "test", username: "test", email: "test@example.com", password: "test")
-User.create!(name: "test2", username: "test2", email: "testyboi@example.com", password: "test")
+# User.create!(name: "test", username: "test", email: "test@example.com", password: "test")
+# User.create!(name: "test2", username: "test2", email: "testyboi@example.com", password: "test")
 
 #  jeskai_control = Deck.new(name: 'Jeskai Control')
 #  dredge = Deck.new(name: 'Dredge Deck')
@@ -102,4 +102,10 @@ User.create!(name: "test2", username: "test2", email: "testyboi@example.com", pa
 
 
 
-#     formats = ['Standard', 'Historic', 'Modern', 'Legacy', 'Vintage', 'Commander']
+
+Format.create(name: 'Standard')
+Format.create(name: 'Modern')
+Format.create(name: 'Legacy')
+Format.create(name: 'Vintage')
+Format.create(name: 'Commander')
+puts "Formats created: #{Format.all.size}"

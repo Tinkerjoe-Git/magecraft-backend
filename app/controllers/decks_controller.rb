@@ -20,15 +20,15 @@ class DecksController < ApplicationController
   end
 
   def create
-    if params[:cards].length == 0
-      render json: {error: {message:"Deck submitted with no cards"}} and return
-    end
+    # if params[:cards].size == 0
+    #   render json: {error: {message:"Deck submitted with no cards"}} and return
+    # end
 
     authenticate_user!
     @user = current_user
 
     @deck = Deck.new(
-      name: params[:name].titleize,
+      name: params[:name],
       format_id: Format.find_by(name: params[:formatName]).id,
       user_id: @user.id,
       creator: params[:creator]
